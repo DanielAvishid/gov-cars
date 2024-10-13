@@ -4,16 +4,11 @@ import { Cars } from "../types/Cars";
 import { notFound } from "next/navigation";
 
 export default async function Page() {
-  const cars: Cars = await actions.getCars(10);
   const car = await actions.getCar(14338101);
-
-  if (!cars) {
-    return notFound();
-  }
 
   return (
     <>
-      <Table cars={cars} />
+      <Table />
     </>
   );
 }
