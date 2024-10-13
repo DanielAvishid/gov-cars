@@ -1,11 +1,15 @@
 import * as actions from "@/actions";
 import Table from "../components/Table";
 import { Cars } from "../types/Cars";
+import { notFound } from "next/navigation";
 
 export default async function Page() {
   const cars: Cars = await actions.getCars(10);
   const car = await actions.getCar(14338101);
-  console.log(car);
+
+  if (!cars) {
+    return notFound();
+  }
 
   return (
     <>
