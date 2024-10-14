@@ -1,12 +1,14 @@
-import * as actions from "@/actions";
+"use client";
+import { useCars } from "@/services/queries";
 import { Car } from "@/types/Cars";
+import { useState } from "react";
 
-export default async function Table() {
-  const resp = await actions.getCars(10);
-  const { data, config } = resp;
-  const cars = data.result.records;
+export default function Table() {
+  const [currPage, setCurrPage] = useState<number>(0);
+  const { data, isLoading } = useCars((currPage + 1) * 10);
+  const cars = data?.result.records;
 
-  const renderedCars = cars.map((car: Car) => {
+  const renderedCars = cars?.map((car: Car) => {
     return (
       <div key={car.mispar_rechev} className="grid grid-flow-col gap-20">
         <div>{car.tzeva_rechev}</div>
@@ -28,9 +30,15 @@ export default async function Table() {
         />
       </div>
       <div className="grid grid-flow-col"></div>
+
       {renderedCars}
       <div className="flex items-center mx-auto gap-4 mt-10">
-        <button className="border border-black p-4">עמוד הבא</button>
+        <button
+          className="border border-black p-4"
+          onClick={() => setCurrPage(currPage + 1)}
+        >
+          עמוד הבא
+        </button>
         <div className="border border-black p-4"></div>
         <button className="border border-black p-4">עמוד קודם</button>
       </div>
